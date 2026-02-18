@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women — Maison</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      height: 55vh;
+      background: var(--black);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 4rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .page-hero img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      opacity: 0.35;
+      filter: grayscale(100%);
+    }
+    .page-hero-content { position: relative; z-index: 2; }
+    .page-hero-label {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.7s ease 0.2s both;
+    }
+    .page-hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300; line-height: 0.9;
+      color: var(--white);
+      animation: fadeUp 0.7s ease 0.4s both;
+    }
+    .page-hero-title em { font-style: italic; }
+    .page-hero-count {
+      position: absolute; bottom: 4rem; right: 4rem;
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gray-500);
+      animation: fadeIn 0.7s ease 0.8s both;
+    }
+
+    /* FILTERS */
+    .filter-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 4rem;
+      border-bottom: 1px solid var(--gray-100);
+      position: sticky; top: 80px; background: var(--white); z-index: 10;
+    }
+    .filter-tags { display: flex; gap: 0.5rem; }
+    .filter-tag {
+      padding: 0.4rem 1rem;
+      font-size: 0.6rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--gray-300);
+      background: transparent; cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .filter-tag:hover,
+    .filter-tag.active { background: var(--black); color: var(--white); border-color: var(--black); }
+    .sort-select {
+      font-size: 0.6rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: none; border-bottom: 1px solid var(--black);
+      background: transparent; cursor: pointer;
+      padding: 0.2rem 0;
+      font-family: var(--sans);
+      outline: none;
+    }
+
+    /* PRODUCT GRID */
+    .collection-section { padding: 3rem 4rem 6rem; }
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem 2rem;
+    }
+    .wishlist-btn {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 32px; height: 32px;
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      cursor: pointer;
+      opacity: 0.4;
+      z-index: 3;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .wishlist-btn:hover { transform: scale(1.1); }
+    .size-swatches {
+      display: flex; gap: 0.3rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .size-swatch {
+      font-size: 0.55rem; letter-spacing: 0.1em;
+      border: 1px solid var(--gray-300);
+      padding: 0.15rem 0.4rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .size-swatch:hover { border-color: var(--black); }
+    .product-new {
+      position: absolute; top: 1rem; left: 1rem;
+      font-size: 0.55rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--white); color: var(--black);
+      padding: 0.25rem 0.6rem;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80" alt="Women">
+    <div class="page-hero-content">
+      <p class="page-hero-label">SS25 Collection</p>
+      <h1 class="page-hero-title"><em>Women's</em><br>Collection</h1>
+    </div>
+    <span class="page-hero-count">5 Pieces</span>
+  </section>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-tags">
+      <button class="filter-tag active" onclick="filterProducts('all', this)">All</button>
+      <button class="filter-tag" onclick="filterProducts('new', this)">New In</button>
+      <button class="filter-tag" onclick="filterProducts('outerwear', this)">Outerwear</button>
+      <button class="filter-tag" onclick="filterProducts('essentials', this)">Essentials</button>
+      <button class="filter-tag" onclick="filterProducts('dress', this)">Dresses</button>
+    </div>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="">Sort: Featured</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+      <option value="new">Newest First</option>
+    </select>
+  </div>
+
+  <!-- COLLECTION -->
+  <section class="collection-section">
+    <div class="collection-grid" id="productGrid">
+
+      <!-- W1 -->
+      <a href="product.html?id=w1&cat=women" class="product-card animate" data-delay="0" data-cat="outerwear" data-price="398000">
+        <span class="product-new">New</span>
+        <button class="wishlist-btn" data-wishlist="w1">♡</button>
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Atelier Coat">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'w1',name:'Atelier Oversized Coat',price:398000,size:'M',img:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=200&q=60'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">Maison Women</p>
+          <p class="product-name">Atelier Oversized Coat</p>
+          <p class="product-price">₩398,000</p>
+          <div class="size-swatches">
+            <span class="size-swatch">XS</span>
+            <span class="size-swatch">S</span>
+            <span class="size-swatch">M</span>
+            <span class="size-swatch">L</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- W2 -->
+      <a href="product.html?id=w2&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="256000">
+        <button class="wishlist-btn" data-wishlist="w2">♡</button>
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=600&q=80" alt="Linen Set">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'w2',name:'Linen Wide-Leg Set',price:256000,size:'S',img:'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=200&q=60'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">Maison Women</p>
+          <p class="product-name">Linen Wide-Leg Set</p>
+          <p class="product-price">₩256,000</p>
+          <div class="size-swatches">
+            <span class="size-swatch">XS</span>
+            <span class="size-swatch">S</span>
+            <span class="size-swatch">M</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- W3 -->
+      <a href="product.html?id=w3&cat=women" class="product-card animate" data-delay="200" data-cat="essentials" data-price="189000">
+        <span class="product-new">New</span>
+        <button class="wishlist-btn" data-wishlist="w3">♡</button>
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80" alt="Cashmere Turtleneck">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'w3',name:'Cashmere Turtleneck',price:189000,size:'M',img:'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=200&q=60'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">Maison Women</p>
+          <p class="product-name">Cashmere Turtleneck</p>
+          <p class="product-price">₩189,000</p>
+          <div class="size-swatches">
+            <span class="size-swatch">XS</span>
+            <span class="size-swatch">S</span>
+            <span class="size-swatch">M</span>
+            <span class="size-swatch">L</span>
+            <span class="size-swatch">XL</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- W4 -->
+      <a href="product.html?id=w4&cat=women" class="product-card animate" data-delay="0" data-cat="dress" data-price="298000">
+        <button class="wishlist-btn" data-wishlist="w4">♡</button>
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="Silk Dress">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'w4',name:'Draped Silk Midi Dress',price:298000,size:'S',img:'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=200&q=60'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">Maison Women</p>
+          <p class="product-name">Draped Silk Midi Dress</p>
+          <p class="product-price">₩298,000</p>
+          <div class="size-swatches">
+            <span class="size-swatch">XS</span>
+            <span class="size-swatch">S</span>
+            <span class="size-swatch">M</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- W5 -->
+      <a href="product.html?id=w5&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="178000">
+        <span class="product-new">New</span>
+        <button class="wishlist-btn" data-wishlist="w5">♡</button>
+        <div class="product-img-wrap">
+          <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&q=80" alt="Trousers">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'w5',name:'Structured Wool Trousers',price:178000,size:'M',img:'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=200&q=60'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">Maison Women</p>
+          <p class="product-name">Structured Wool Trousers</p>
+          <p class="product-price">₩178,000</p>
+          <div class="size-swatches">
+            <span class="size-swatch">XS</span>
+            <span class="size-swatch">S</span>
+            <span class="size-swatch">M</span>
+            <span class="size-swatch">L</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  renderNav('women.html');
+  renderFooter();
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+  initWishlistBtns();
+
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function sortProducts(val) {
+    const grid = document.getElementById('productGrid');
+    const cards = [...grid.querySelectorAll('.product-card')];
+    cards.sort((a, b) => {
+      const pa = parseInt(a.dataset.price);
+      const pb = parseInt(b.dataset.price);
+      if (val === 'price-low') return pa - pb;
+      if (val === 'price-high') return pb - pa;
+      return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+  }
+</script>
+</body>
+</html>

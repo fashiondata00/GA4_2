@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — Maison</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .product-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 3rem 0;
+    }
+    /* LEFT: IMAGES */
+    .product-images {
+      padding: 0 3rem 0 4rem;
+      position: sticky; top: 100px;
+      height: fit-content;
+    }
+    .main-image {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--gray-100);
+      margin-bottom: 1rem;
+      cursor: zoom-in;
+    }
+    .main-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .main-image:hover img { transform: scale(1.06); }
+    .thumb-row {
+      display: flex; gap: 0.8rem;
+    }
+    .thumb {
+      width: 80px; height: 100px;
+      overflow: hidden; cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .thumb:hover, .thumb.active { border-color: var(--black); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* RIGHT: INFO */
+    .product-details {
+      padding: 0 4rem 0 3rem;
+    }
+    .breadcrumb {
+      display: flex; gap: 0.5rem; align-items: center;
+      font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a { color: var(--gray-500); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--black); }
+    .breadcrumb span { color: var(--gray-300); }
+    .product-detail-brand {
+      font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 0.5rem;
+    }
+    .product-detail-name {
+      font-family: var(--serif);
+      font-size: 2.5rem; font-weight: 300; line-height: 1.1;
+      margin-bottom: 0.8rem;
+    }
+    .product-detail-price {
+      font-size: 1.2rem; font-weight: 300;
+      color: var(--black); margin-bottom: 2rem;
+    }
+    .divider { height: 1px; background: var(--gray-100); margin: 1.5rem 0; }
+
+    /* SIZE */
+    .size-section-label {
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--black);
+      margin-bottom: 0.8rem;
+      display: flex; justify-content: space-between;
+    }
+    .size-guide-link {
+      font-size: 0.6rem; color: var(--gray-500);
+      text-decoration: underline; cursor: pointer;
+    }
+    .size-grid {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .size-btn {
+      width: 52px; height: 52px;
+      border: 1px solid var(--gray-300);
+      background: transparent;
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: all 0.2s;
+    }
+    .size-btn:hover { border-color: var(--black); }
+    .size-btn.selected { background: var(--black); color: var(--white); border-color: var(--black); }
+    .size-btn.unavailable { opacity: 0.3; text-decoration: line-through; cursor: not-allowed; }
+
+    /* ADD TO BAG */
+    .add-actions { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .add-actions .btn { flex: 1; padding: 1.1rem; }
+    .wishlist-large {
+      width: 56px; height: 56px;
+      border: 1px solid var(--black);
+      background: transparent; cursor: pointer;
+      font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .wishlist-large:hover { background: var(--black); color: var(--white); }
+
+    /* SHIPPING */
+    .shipping-badges {
+      display: flex; gap: 1.5rem;
+      padding: 1rem 0;
+    }
+    .shipping-badge {
+      font-size: 0.6rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gray-500);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+
+    /* ACCORDION */
+    .accordion-item { border-top: 1px solid var(--gray-100); }
+    .accordion-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 0; cursor: pointer;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .accordion-header:hover { color: var(--gray-700); }
+    .accordion-icon { font-size: 1rem; transition: transform 0.3s; }
+    .accordion-content {
+      overflow: hidden; max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+    .accordion-content.open { max-height: 300px; }
+    .accordion-content p {
+      font-size: 0.8rem; color: var(--gray-700);
+      line-height: 1.9; padding-bottom: 1.2rem;
+    }
+    .accordion-content ul {
+      list-style: none; padding-bottom: 1.2rem;
+    }
+    .accordion-content ul li {
+      font-size: 0.8rem; color: var(--gray-700);
+      padding: 0.2rem 0;
+    }
+    .accordion-content ul li::before { content: '— '; color: var(--gray-400); }
+    .accordion-item:last-child { border-bottom: 1px solid var(--gray-100); }
+
+    /* YOU MAY ALSO LIKE */
+    .related-section { padding: 5rem 4rem; border-top: 1px solid var(--gray-100); }
+    .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+    /* REVIEWS */
+    .reviews-section { padding: 0 4rem 5rem; }
+    .rating-summary {
+      display: flex; align-items: center; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .rating-big {
+      font-family: var(--serif);
+      font-size: 4rem; font-weight: 300; line-height: 1;
+    }
+    .stars { font-size: 1rem; letter-spacing: 0.1rem; color: var(--black); }
+    .rating-label { font-size: 0.7rem; color: var(--gray-500); margin-top: 0.3rem; }
+    .review-card {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .review-header {
+      display: flex; justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+    .reviewer-name {
+      font-size: 0.75rem; font-weight: 400; letter-spacing: 0.1em;
+    }
+    .review-date { font-size: 0.7rem; color: var(--gray-500); }
+    .review-text { font-size: 0.85rem; color: var(--gray-700); line-height: 1.8; }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="product-layout" id="productContainer">
+    <!-- dynamically rendered -->
+  </div>
+
+  <section class="related-section animate">
+    <div class="section-head">
+      <div>
+        <p class="section-label">You May Also Like</p>
+        <h2 class="section-title">Complete <em>the Look</em></h2>
+      </div>
+    </div>
+    <div class="related-grid" id="relatedGrid"></div>
+  </section>
+
+  <section class="reviews-section">
+    <div style="margin-bottom:2rem">
+      <p class="section-label">Customer Stories</p>
+      <h2 class="section-title">Reviews</h2>
+    </div>
+    <div class="rating-summary">
+      <div>
+        <div class="rating-big">4.8</div>
+        <div class="stars">★★★★★</div>
+        <div class="rating-label">Based on 128 reviews</div>
+      </div>
+    </div>
+    <div id="reviewsList">
+      <div class="review-card animate">
+        <div class="review-header">
+          <span class="reviewer-name">J. Kim</span>
+          <div style="display:flex;gap:1rem;align-items:center">
+            <span class="stars" style="font-size:0.7rem">★★★★★</span>
+            <span class="review-date">February 2025</span>
+          </div>
+        </div>
+        <p class="review-text">Exceptional quality. The fabric drapes beautifully and the cut is exactly as pictured. Sizing was true to chart. Will definitely reorder in different colours.</p>
+      </div>
+      <div class="review-card animate">
+        <div class="review-header">
+          <span class="reviewer-name">S. Park</span>
+          <div style="display:flex;gap:1rem;align-items:center">
+            <span class="stars" style="font-size:0.7rem">★★★★☆</span>
+            <span class="review-date">January 2025</span>
+          </div>
+        </div>
+        <p class="review-text">Beautiful minimal piece. The craftsmanship shows in every detail. Arrived within two days, beautifully packaged. Slightly fitted around shoulders so consider sizing up.</p>
+      </div>
+      <div class="review-card animate">
+        <div class="review-header">
+          <span class="reviewer-name">M. Lee</span>
+          <div style="display:flex;gap:1rem;align-items:center">
+            <span class="stars" style="font-size:0.7rem">★★★★★</span>
+            <span class="review-date">January 2025</span>
+          </div>
+        </div>
+        <p class="review-text">This is exactly the kind of piece I was looking for to anchor my capsule wardrobe. Versatile, refined, absolutely worth the investment.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  renderNav('');
+  renderFooter();
+
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('id') || 'w1';
+  const cat = params.get('cat') || 'women';
+
+  const products = {
+    w1: { id:'w1', name:'Atelier Oversized Coat', brand:'Maison Women', price:398000, img:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80', imgs:['https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80','https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80'], cat:'women', desc:'A sculptural oversized coat crafted from a premium wool-cashmere blend. Designed with a relaxed silhouette and minimalist detailing, this piece transcends seasons as the cornerstone of a considered wardrobe.', material:'80% Wool, 20% Cashmere. Dry clean only.', sizes:['XS','S','M','L','XL'] },
+    w2: { id:'w2', name:'Linen Wide-Leg Set', brand:'Maison Women', price:256000, img:'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&q=80', imgs:['https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&q=80','https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80'], cat:'women', desc:'A fluid two-piece set in breathable European linen. The relaxed wide-leg trousers and matching top move effortlessly from day to evening.', material:'100% Belgian Linen. Machine wash cold.', sizes:['XS','S','M'] },
+    w3: { id:'w3', name:'Cashmere Turtleneck', brand:'Maison Women', price:189000, img:'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800&q=80', imgs:['https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800&q=80','https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80'], cat:'women', desc:'Fine gauge cashmere in a classic turtleneck silhouette. Supremely soft against the skin with a refined, slim-fitting cut.', material:'100% Grade-A Mongolian Cashmere. Hand wash cold.', sizes:['XS','S','M','L','XL'] },
+    w4: { id:'w4', name:'Draped Silk Midi Dress', brand:'Maison Women', price:298000, img:'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80', imgs:['https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80','https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80'], cat:'women', desc:'An elegant draped midi dress in liquid silk charmeuse. The bias-cut silhouette skims the body while the draped neckline adds considered detail.', material:'100% Silk Charmeuse. Dry clean only.', sizes:['XS','S','M'] },
+    w5: { id:'w5', name:'Structured Wool Trousers', brand:'Maison Women', price:178000, img:'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80', imgs:['https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80'], cat:'women', desc:'Impeccably tailored wide-leg trousers in a lightweight wool blend. A press crease and high rise create a long, elegant line.', material:'75% Wool, 25% Polyester. Dry clean recommended.', sizes:['XS','S','M','L'] },
+    m1: { id:'m1', name:'Merino Structured Blazer', brand:'Maison Men', price:342000, img:'https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&q=80', imgs:['https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&q=80'], cat:'men', desc:'A softly structured single-breasted blazer in fine merino wool. Clean lines and a precise shoulder seam define this essential layering piece.', material:'100% Merino Wool. Dry clean only.', sizes:['S','M','L','XL'] },
+    m2: { id:'m2', name:'Japanese Selvedge Denim', brand:'Maison Men', price:215000, img:'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80', imgs:['https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80'], cat:'men', desc:'Straight-leg denim cut from Japanese selvedge fabric woven on vintage shuttle looms. Each pair will develop a unique patina with wear.', material:'100% Japanese Selvedge Cotton. Machine wash cold inside out.', sizes:['28','30','32','34','36'] },
+    m3: { id:'m3', name:'Cotton Poplin Shirt', brand:'Maison Men', price:134000, img:'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80', imgs:['https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80'], cat:'men', desc:'A precision-cut shirt in smooth cotton poplin. The subtle banded collar and hidden placket keep the aesthetic clean and considered.', material:'100% Egyptian Cotton Poplin. Machine wash at 30°C.', sizes:['S','M','L','XL'] },
+    m4: { id:'m4', name:'Wool Ribbed Crewneck', brand:'Maison Men', price:156000, img:'https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=800&q=80', imgs:['https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=800&q=80'], cat:'men', desc:'A relaxed crewneck sweater in a fine ribbed knit. The textured fabric adds visual depth while remaining firmly understated.', material:'85% Wool, 15% Nylon. Hand wash cold.', sizes:['S','M','L'] },
+    m5: { id:'m5', name:'Tailored Linen Trousers', brand:'Maison Men', price:198000, img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80', imgs:['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=800&q=80'], cat:'men', desc:'Pleated linen trousers with a relaxed straight leg. A light Italian linen fabric ensures breathability without sacrificing structure.', material:'100% Italian Linen. Machine wash at 30°C or dry clean.', sizes:['28','30','32','34'] },
+  };
+
+  const product = products[productId] || products['w1'];
+  let selectedSize = null;
+
+  function renderProduct(p) {
+    document.title = p.name + ' — Maison';
+    const backLink = p.cat === 'women' ? 'women.html' : 'men.html';
+    const thumbsHTML = p.imgs.map((img, i) =>
+      `<div class="thumb ${i===0?'active':''}" onclick="switchImg('${img}', this)"><img src="${img}" alt=""></div>`
+    ).join('');
+    const sizesHTML = p.sizes.map(s =>
+      `<button class="size-btn" onclick="selectSize('${s}', this)">${s}</button>`
+    ).join('');
+
+    document.getElementById('productContainer').innerHTML = `
+      <div class="product-images">
+        <div class="main-image" id="mainImage">
+          <img src="${p.imgs[0]}" alt="${p.name}" id="mainImg">
+        </div>
+        <div class="thumb-row">${thumbsHTML}</div>
+      </div>
+      <div class="product-details">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a><span>/</span>
+          <a href="${backLink}">${p.cat === 'women' ? 'Women' : 'Men'}</a><span>/</span>
+          <span style="color:var(--black)">${p.name}</span>
+        </div>
+        <p class="product-detail-brand">${p.brand}</p>
+        <h1 class="product-detail-name">${p.name}</h1>
+        <p class="product-detail-price">₩${p.price.toLocaleString()}</p>
+        <div class="divider"></div>
+        <div>
+          <div class="size-section-label">
+            <span>Select Size</span>
+            <span class="size-guide-link">Size Guide</span>
+          </div>
+          <div class="size-grid">${sizesHTML}</div>
+        </div>
+        <div class="add-actions">
+          <button class="btn btn-primary" onclick="handleAddToCart()">Add to Bag</button>
+          <button class="wishlist-large" data-wishlist="${p.id}">♡</button>
+        </div>
+        <div class="shipping-badges">
+          <span class="shipping-badge">🚚 Free Shipping</span>
+          <span class="shipping-badge">↩ 30-Day Returns</span>
+          <span class="shipping-badge">✦ Authenticity Guaranteed</span>
+        </div>
+        <div class="divider"></div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <span>Product Details</span><span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-content open">
+            <p>${p.desc}</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <span>Materials & Care</span><span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-content">
+            <p>${p.material}</p>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAcc(this)">
+            <span>Shipping & Returns</span><span class="accordion-icon">+</span>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li>Free standard shipping on all orders over ₩150,000</li>
+              <li>Express delivery available (1-2 business days)</li>
+              <li>Free returns within 30 days of purchase</li>
+              <li>Items must be unworn, unwashed with original tags</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+    initWishlistBtns();
+  }
+
+  function renderRelated(p) {
+    const all = Object.values(products).filter(x => x.id !== p.id && x.cat === p.cat).slice(0, 4);
+    document.getElementById('relatedGrid').innerHTML = all.map(r => `
+      <a href="product.html?id=${r.id}&cat=${r.cat}" class="product-card">
+        <div class="product-img-wrap">
+          <img src="${r.imgs[0]}" alt="${r.name}">
+          <div class="product-overlay">
+            <button class="btn btn-white" style="width:100%;font-size:0.6rem" onclick="event.preventDefault();addToCart({id:'${r.id}',name:'${r.name}',price:${r.price},size:'M',img:'${r.imgs[0]}'})">Add to Bag</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand">${r.brand}</p>
+          <p class="product-name">${r.name}</p>
+          <p class="product-price">₩${r.price.toLocaleString()}</p>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  function switchImg(src, thumb) {
+    document.getElementById('mainImg').src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+
+  function selectSize(size, btn) {
+    selectedSize = size;
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  function handleAddToCart() {
+    if (!selectedSize) {
+      alert('Please select a size');
+      return;
+    }
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      size: selectedSize,
+      img: product.imgs[0]
+    });
+  }
+
+  function toggleAcc(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.accordion-icon');
+    content.classList.toggle('open');
+    icon.textContent = content.classList.contains('open') ? '−' : '+';
+  }
+
+  renderProduct(product);
+  renderRelated(product);
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

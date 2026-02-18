@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal — Maison</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* HERO */
+    .blog-hero {
+      padding: 5rem 4rem 4rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: end;
+    }
+    .blog-hero-label {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .blog-hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 0.95;
+      animation: fadeUp 0.6s ease 0.4s both;
+    }
+    .blog-hero-title em { font-style: italic; }
+    .blog-hero-desc {
+      font-size: 0.85rem; color: var(--gray-500);
+      line-height: 1.9; max-width: 360px; align-self: flex-end;
+      animation: fadeUp 0.6s ease 0.6s both;
+    }
+
+    /* CATEGORIES */
+    .blog-cats {
+      display: flex; gap: 0.5rem;
+      padding: 0 4rem 3rem;
+      border-bottom: 1px solid var(--gray-100);
+      overflow-x: auto;
+    }
+    .blog-cat-btn {
+      padding: 0.5rem 1.2rem;
+      font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+      border: 1px solid var(--gray-300);
+      background: transparent; cursor: pointer;
+      font-family: var(--sans); white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .blog-cat-btn:hover, .blog-cat-btn.active {
+      background: var(--black); color: var(--white); border-color: var(--black);
+    }
+
+    /* FEATURED POST */
+    .featured-post {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      margin: 0; overflow: hidden;
+    }
+    .featured-img {
+      aspect-ratio: 4/3; overflow: hidden;
+    }
+    .featured-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%);
+      transition: transform 0.8s ease, filter 0.6s ease;
+    }
+    .featured-post:hover .featured-img img {
+      transform: scale(1.04); filter: grayscale(20%);
+    }
+    .featured-text {
+      background: var(--black); padding: 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .feat-cat { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 1.2rem; }
+    .feat-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300; line-height: 1.15; color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .feat-title em { font-style: italic; }
+    .feat-excerpt { font-size: 0.8rem; color: var(--gray-500); line-height: 1.9; margin-bottom: 2rem; }
+    .feat-meta { font-size: 0.65rem; color: var(--gray-700); letter-spacing: 0.1em; margin-bottom: 2rem; }
+    .read-link {
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--white); text-decoration: none;
+      border-bottom: 1px solid var(--gray-700);
+      padding-bottom: 2px; width: fit-content;
+      transition: border-color 0.2s;
+    }
+    .read-link:hover { border-color: var(--white); }
+
+    /* POST GRID */
+    .posts-section { padding: 4rem; }
+    .posts-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem 2rem;
+    }
+    .post-card {
+      text-decoration: none; color: var(--black); display: block;
+    }
+    .post-img {
+      aspect-ratio: 16/11; overflow: hidden; background: var(--gray-100);
+      margin-bottom: 1.5rem;
+    }
+    .post-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%);
+      transition: transform 0.7s ease, filter 0.5s ease;
+    }
+    .post-card:hover .post-img img { transform: scale(1.05); filter: grayscale(10%); }
+    .post-cat {
+      font-size: 0.58rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 0.6rem;
+    }
+    .post-title {
+      font-family: var(--serif); font-size: 1.25rem;
+      font-weight: 400; line-height: 1.3; margin-bottom: 0.8rem;
+    }
+    .post-excerpt { font-size: 0.78rem; color: var(--gray-500); line-height: 1.8; margin-bottom: 1rem; }
+    .post-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .post-author { font-size: 0.65rem; color: var(--gray-500); }
+    .post-read-more {
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 1px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .post-card:hover .post-read-more { opacity: 1; }
+
+    /* NEWSLETTER */
+    .newsletter-section {
+      margin: 2rem 4rem 0;
+      background: var(--black);
+      padding: 5rem 6rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .nl-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 1rem; }
+    .nl-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; color: var(--white);
+    }
+    .nl-title em { font-style: italic; }
+    .nl-form { display: flex; flex-direction: column; gap: 1rem; }
+    .nl-input {
+      padding: 1rem 1.2rem; border: 1px solid var(--gray-700);
+      background: transparent; font-family: var(--sans); font-size: 0.8rem;
+      color: var(--white); outline: none;
+      transition: border-color 0.2s;
+    }
+    .nl-input:focus { border-color: var(--gray-400); }
+    .nl-input::placeholder { color: var(--gray-700); }
+    .nl-note { font-size: 0.65rem; color: var(--gray-700); line-height: 1.7; }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div>
+      <p class="blog-hero-label">The Maison Journal</p>
+      <h1 class="blog-hero-title"><em>Stories</em><br>of Style &<br>Substance</h1>
+    </div>
+    <p class="blog-hero-desc">A curated space for considered ideas — from the architecture of the minimal wardrobe to the artisans behind the fabric. Fashion as a lens for living better.</p>
+  </section>
+
+  <!-- CATEGORIES -->
+  <div class="blog-cats">
+    <button class="blog-cat-btn active" onclick="filterPosts('all', this)">All Stories</button>
+    <button class="blog-cat-btn" onclick="filterPosts('style', this)">Style Edit</button>
+    <button class="blog-cat-btn" onclick="filterPosts('material', this)">Material Guide</button>
+    <button class="blog-cat-btn" onclick="filterPosts('wardrobe', this)">Wardrobe</button>
+    <button class="blog-cat-btn" onclick="filterPosts('interview', this)">Interviews</button>
+    <button class="blog-cat-btn" onclick="filterPosts('culture', this)">Culture</button>
+  </div>
+
+  <!-- FEATURED -->
+  <a href="blog-post.html?id=1" class="featured-post animate">
+    <div class="featured-img">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="Featured">
+    </div>
+    <div class="featured-text">
+      <p class="feat-cat">✦ Editor's Pick · Style Edit</p>
+      <h2 class="feat-title">The Case for <em>Monochrome</em> Dressing</h2>
+      <p class="feat-excerpt">Why wearing one colour from head to toe is the most sophisticated — and most underrated — approach to getting dressed. A meditation on restraint.</p>
+      <p class="feat-meta">By Soyoung Choi · March 15, 2025 · 8 min read</p>
+      <span class="read-link">Read the Story →</span>
+    </div>
+  </a>
+
+  <!-- POSTS GRID -->
+  <section class="posts-section">
+    <div class="section-head" style="margin-bottom:2.5rem">
+      <div>
+        <p class="section-label animate">Latest Stories</p>
+        <h2 class="section-title animate" data-delay="100">From the <em>Archive</em></h2>
+      </div>
+    </div>
+    <div class="posts-grid" id="postsGrid">
+
+      <a href="blog-post.html?id=2" class="post-card animate" data-delay="0" data-cat="material">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Material Guide</p>
+        <p class="post-title">Why Linen is the Fabric of the Season</p>
+        <p class="post-excerpt">The ancient fibre is having its most sophisticated moment yet — and the reasons go deeper than breathability.</p>
+        <div class="post-footer">
+          <span class="post-author">By Min-jun Park · March 8</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog-post.html?id=3" class="post-card animate" data-delay="80" data-cat="wardrobe">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Wardrobe Edit</p>
+        <p class="post-title">Ten Pieces. Infinite Combinations.</p>
+        <p class="post-excerpt">The mathematical beauty of the capsule wardrobe — and why fewer choices consistently produce better outcomes.</p>
+        <div class="post-footer">
+          <span class="post-author">By Jisoo Han · Feb 28</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog-post.html?id=4" class="post-card animate" data-delay="160" data-cat="interview">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Interview</p>
+        <p class="post-title">The Tailor Who Measures Time</p>
+        <p class="post-excerpt">We visit the Gyeonggi-do atelier of master tailor Yoon Bongsu, whose waiting list is three years long — and worth every day.</p>
+        <div class="post-footer">
+          <span class="post-author">By Dasom Kwon · Feb 20</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog-post.html?id=5" class="post-card animate" data-delay="0" data-cat="culture">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Culture</p>
+        <p class="post-title">How Seoul Became the World's Quiet Fashion Capital</p>
+        <p class="post-excerpt">Beyond the streetwear hype, a different Seoul exists — one defined by restraint, craft, and a deeply personal approach to dress.</p>
+        <div class="post-footer">
+          <span class="post-author">By Soyoung Choi · Feb 12</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog-post.html?id=6" class="post-card animate" data-delay="80" data-cat="style">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Style Edit</p>
+        <p class="post-title">Black and White: A Permanent State of Mind</p>
+        <p class="post-excerpt">The perennial palette that never tires — exploring the infinite visual language of achromatic dressing through the decades.</p>
+        <div class="post-footer">
+          <span class="post-author">By Min-jun Park · Feb 5</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog-post.html?id=7" class="post-card animate" data-delay="160" data-cat="material">
+        <div class="post-img">
+          <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=600&q=80" alt="">
+        </div>
+        <p class="post-cat">Material Guide</p>
+        <p class="post-title">The Cashmere Spectrum: From Commodity to Couture</p>
+        <p class="post-excerpt">Not all cashmere is created equal. An honest guide to understanding grade, source, and longevity — before you invest.</p>
+        <div class="post-footer">
+          <span class="post-author">By Jisoo Han · Jan 29</span>
+          <span class="post-read-more">Read →</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter-section animate">
+    <div>
+      <p class="nl-label">The Journal Newsletter</p>
+      <h2 class="nl-title">Ideas Worth<br><em>Reading</em></h2>
+    </div>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="your@email.com">
+      <button class="btn btn-white" onclick="subscribeNewsletter(this)">Subscribe to the Journal</button>
+      <p class="nl-note">Thoughtfully curated. Sent twice monthly. No noise, just considered fashion writing.</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  renderNav('blog.html');
+  renderFooter();
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+
+  function filterPosts(cat, btn) {
+    document.querySelectorAll('.blog-cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.post-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  function subscribeNewsletter(btn) {
+    btn.textContent = '✓ Subscribed';
+    btn.style.background = 'var(--black)';
+    btn.style.color = 'var(--white)';
+  }
+</script>
+</body>
+</html>

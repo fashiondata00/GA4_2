@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Maison</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 5rem;
+      padding: 3rem 4rem 6rem;
+      align-items: start;
+    }
+    /* STEPS */
+    .checkout-steps {
+      display: flex; gap: 0; margin-bottom: 3rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .step {
+      padding: 1rem 0; margin-right: 2.5rem;
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gray-400);
+      border-bottom: 2px solid transparent;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .step.active { color: var(--black); border-bottom-color: var(--black); }
+    .step.done { color: var(--gray-500); }
+
+    /* SECTION BLOCKS */
+    .checkout-section { margin-bottom: 2.5rem; }
+    .checkout-section-title {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-label {
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gray-500);
+      margin-bottom: 0.5rem;
+    }
+    .form-input {
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--gray-300);
+      font-family: var(--sans); font-size: 0.85rem;
+      outline: none; background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--black); }
+    .form-input::placeholder { color: var(--gray-400); }
+    .form-select {
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--gray-300);
+      font-family: var(--sans); font-size: 0.85rem;
+      outline: none; background: var(--white);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center;
+    }
+
+    /* PAYMENT */
+    .payment-methods { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; }
+    .pay-method {
+      flex: 1; padding: 1rem;
+      border: 1px solid var(--gray-300);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.4rem;
+      cursor: pointer; transition: border-color 0.2s;
+      background: transparent;
+    }
+    .pay-method:hover, .pay-method.active { border-color: var(--black); }
+    .pay-method-icon { font-size: 1.2rem; }
+    .pay-method-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .card-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; }
+    .card-input-icon { position: relative; }
+    .card-input-icon .form-input { padding-right: 3rem; }
+    .card-icon {
+      position: absolute; right: 1rem; top: 50%;
+      transform: translateY(-50%); font-size: 0.9rem;
+    }
+
+    /* ORDER SUMMARY RIGHT */
+    .checkout-summary {
+      position: sticky; top: 100px;
+      border: 1px solid var(--gray-100); padding: 2.5rem;
+    }
+    .cs-title {
+      font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+      margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .cs-item {
+      display: flex; gap: 1.2rem; margin-bottom: 1.2rem;
+    }
+    .cs-item-img { width: 64px; height: 80px; overflow: hidden; background: var(--gray-100); flex-shrink: 0; }
+    .cs-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cs-item-name { font-size: 0.8rem; font-weight: 400; margin-bottom: 0.3rem; }
+    .cs-item-meta { font-size: 0.7rem; color: var(--gray-500); }
+    .cs-item-price { font-size: 0.8rem; margin-left: auto; flex-shrink: 0; }
+    .cs-divider { height: 1px; background: var(--gray-100); margin: 1.2rem 0; }
+    .cs-line {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; margin-bottom: 0.6rem;
+    }
+    .cs-line span:first-child { color: var(--gray-500); }
+    .cs-total {
+      display: flex; justify-content: space-between;
+      font-family: var(--serif); font-size: 1.1rem;
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    /* PLACE ORDER */
+    .place-order-section {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .terms-check {
+      display: flex; gap: 0.8rem; align-items: flex-start;
+      font-size: 0.7rem; color: var(--gray-500);
+      line-height: 1.6; margin-bottom: 1.5rem; cursor: pointer;
+    }
+    .terms-check input { margin-top: 3px; flex-shrink: 0; }
+
+    /* SUCCESS */
+    .order-success {
+      text-align: center; padding: 5rem 2rem;
+      display: none; grid-column: span 2;
+    }
+    .success-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+    .success-title {
+      font-family: var(--serif); font-size: 2.5rem; font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .success-sub { font-size: 0.85rem; color: var(--gray-500); line-height: 1.8; max-width: 400px; margin: 0 auto 2.5rem; }
+    .order-number { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+  <div id="checkoutWrap">
+    <div class="checkout-layout" id="checkoutLayout">
+      <!-- FORM SIDE -->
+      <div>
+        <div class="checkout-steps">
+          <div class="step active" id="step1label">Information</div>
+          <div class="step" id="step2label">Shipping</div>
+          <div class="step" id="step3label">Payment</div>
+        </div>
+
+        <!-- STEP 1: INFORMATION -->
+        <div id="step1">
+          <div class="checkout-section">
+            <h2 class="checkout-section-title">Contact <em style="font-style:italic">Information</em></h2>
+            <div class="form-row full"><div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="email" placeholder="your@email.com"></div></div>
+          </div>
+          <div class="checkout-section">
+            <h2 class="checkout-section-title">Shipping <em style="font-style:italic">Address</em></h2>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="fname" placeholder="Seojun"></div>
+              <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="lname" placeholder="Kim"></div>
+            </div>
+            <div class="form-row full"><div class="form-group"><label class="form-label">Address</label><input class="form-input" id="addr" placeholder="123 Fashion Street"></div></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">City</label><input class="form-input" id="city" placeholder="Seoul"></div>
+              <div class="form-group"><label class="form-label">Postal Code</label><input class="form-input" id="postal" placeholder="04523"></div>
+            </div>
+            <div class="form-row full">
+              <div class="form-group"><label class="form-label">Country</label>
+                <select class="form-input form-select" id="country">
+                  <option value="KR">South Korea</option>
+                  <option value="US">United States</option>
+                  <option value="JP">Japan</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="FR">France</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row full"><div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="phone" placeholder="+82 10-0000-0000"></div></div>
+          </div>
+          <button class="btn btn-primary" onclick="goToStep(2)">Continue to Shipping</button>
+        </div>
+
+        <!-- STEP 2: SHIPPING -->
+        <div id="step2" style="display:none">
+          <div class="checkout-section">
+            <h2 class="checkout-section-title">Shipping <em style="font-style:italic">Method</em></h2>
+            <div style="display:flex;flex-direction:column;gap:0.8rem">
+              <label style="display:flex;align-items:center;gap:1.2rem;padding:1.2rem;border:1px solid var(--black);cursor:pointer">
+                <input type="radio" name="shipping" value="free" checked style="accent-color:var(--black)">
+                <div style="flex:1">
+                  <p style="font-size:0.8rem;font-weight:400">Standard Delivery</p>
+                  <p style="font-size:0.7rem;color:var(--gray-500)">3–5 business days</p>
+                </div>
+                <span style="font-size:0.8rem">Free</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:1.2rem;padding:1.2rem;border:1px solid var(--gray-300);cursor:pointer">
+                <input type="radio" name="shipping" value="express" style="accent-color:var(--black)">
+                <div style="flex:1">
+                  <p style="font-size:0.8rem;font-weight:400">Express Delivery</p>
+                  <p style="font-size:0.7rem;color:var(--gray-500)">1–2 business days</p>
+                </div>
+                <span style="font-size:0.8rem">₩5,000</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:1.2rem;padding:1.2rem;border:1px solid var(--gray-300);cursor:pointer">
+                <input type="radio" name="shipping" value="same" style="accent-color:var(--black)">
+                <div style="flex:1">
+                  <p style="font-size:0.8rem;font-weight:400">Same Day (Seoul Only)</p>
+                  <p style="font-size:0.7rem;color:var(--gray-500)">Order before 12PM</p>
+                </div>
+                <span style="font-size:0.8rem">₩15,000</span>
+              </label>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem">
+            <button class="btn btn-outline" onclick="goToStep(1)">← Back</button>
+            <button class="btn btn-primary" onclick="goToStep(3)">Continue to Payment</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PAYMENT -->
+        <div id="step3" style="display:none">
+          <div class="checkout-section">
+            <h2 class="checkout-section-title">Payment <em style="font-style:italic">Details</em></h2>
+            <div class="payment-methods">
+              <button class="pay-method active" onclick="selectPay(this)">
+                <span class="pay-method-icon">💳</span>
+                <span class="pay-method-label">Card</span>
+              </button>
+              <button class="pay-method" onclick="selectPay(this)">
+                <span class="pay-method-icon">📱</span>
+                <span class="pay-method-label">Kakao Pay</span>
+              </button>
+              <button class="pay-method" onclick="selectPay(this)">
+                <span class="pay-method-icon">🏦</span>
+                <span class="pay-method-label">Bank Transfer</span>
+              </button>
+              <button class="pay-method" onclick="selectPay(this)">
+                <span class="pay-method-icon">N</span>
+                <span class="pay-method-label">Naver Pay</span>
+              </button>
+            </div>
+            <div id="cardForm">
+              <div class="form-row full card-input-icon">
+                <div class="form-group" style="position:relative">
+                  <label class="form-label">Card Number</label>
+                  <input class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+                  <span class="card-icon">💳</span>
+                </div>
+              </div>
+              <div class="card-row" style="margin-top:1rem">
+                <div class="form-group"><label class="form-label">Cardholder Name</label><input class="form-input" placeholder="SEOJUN KIM"></div>
+                <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)"></div>
+                <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="•••" maxlength="3" type="password"></div>
+              </div>
+            </div>
+          </div>
+          <div class="place-order-section">
+            <label class="terms-check">
+              <input type="checkbox" id="termsCheck">
+              <span>I agree to Maison's <u>Terms of Service</u> and <u>Privacy Policy</u>. I confirm my order details are correct.</span>
+            </label>
+            <div style="display:flex;gap:1rem">
+              <button class="btn btn-outline" onclick="goToStep(2)">← Back</button>
+              <button class="btn btn-primary" style="flex:1" onclick="placeOrder()">Place Order →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUMMARY RIGHT -->
+      <div class="checkout-summary">
+        <h3 class="cs-title">Your Order</h3>
+        <div id="csSummaryItems"></div>
+        <div class="cs-divider"></div>
+        <div class="cs-line"><span>Subtotal</span><span id="csSubtotal">—</span></div>
+        <div class="cs-line"><span>Shipping</span><span id="csShipping">Free</span></div>
+        <div class="cs-line"><span>Tax (10%)</span><span id="csTax">—</span></div>
+        <div class="cs-total"><span>Total</span><span id="csTotal">—</span></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="order-success" id="orderSuccess">
+      <div class="success-icon">✓</div>
+      <p class="order-number">Order #MS-2025-<span id="orderNum"></span></p>
+      <h2 class="success-title">Thank you for<br><em>your order</em></h2>
+      <p class="success-sub">Your order has been confirmed and will be with you soon. A confirmation has been sent to your email.</p>
+      <div style="display:flex;gap:1rem;justify-content:center">
+        <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+        <a href="blog.html" class="btn btn-outline">Read the Journal</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+<script>
+  renderNav('');
+
+  let currentStep = 1;
+
+  function goToStep(n) {
+    document.querySelectorAll('[id^="step"]').forEach((el, i) => {
+      if (/^step\d$/.test(el.id)) el.style.display = 'none';
+    });
+    document.getElementById('step' + n).style.display = 'block';
+    document.querySelectorAll('.step').forEach((s, i) => {
+      s.classList.toggle('active', i + 1 === n);
+      s.classList.toggle('done', i + 1 < n);
+    });
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectPay(btn) {
+    document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function formatCard(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 16);
+    input.value = v.replace(/(.{4})/g, '$1 ').trim();
+  }
+
+  function formatExpiry(input) {
+    let v = input.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length > 2) v = v.slice(0, 2) + ' / ' + v.slice(2);
+    input.value = v;
+  }
+
+  function renderSummary() {
+    const cart = getCart();
+    const itemsEl = document.getElementById('csSummaryItems');
+    itemsEl.innerHTML = cart.map(item => `
+      <div class="cs-item">
+        <div class="cs-item-img"><img src="${item.img}" alt="${item.name}"></div>
+        <div style="flex:1">
+          <p class="cs-item-name">${item.name}</p>
+          <p class="cs-item-meta">Size: ${item.size} · Qty: ${item.qty}</p>
+        </div>
+        <span class="cs-item-price">₩${(item.price * item.qty).toLocaleString()}</span>
+      </div>
+    `).join('');
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const tax = Math.round(subtotal * 0.1);
+    const total = subtotal + tax;
+    document.getElementById('csSubtotal').textContent = '₩' + subtotal.toLocaleString();
+    document.getElementById('csTax').textContent = '₩' + tax.toLocaleString();
+    document.getElementById('csTotal').textContent = '₩' + total.toLocaleString();
+  }
+
+  function placeOrder() {
+    if (!document.getElementById('termsCheck').checked) {
+      alert('Please agree to the Terms of Service to continue.');
+      return;
+    }
+    document.getElementById('checkoutLayout').style.display = 'none';
+    const success = document.getElementById('orderSuccess');
+    success.style.display = 'block';
+    document.getElementById('orderNum').textContent = Math.floor(100000 + Math.random() * 900000);
+    saveCart([]);
+    updateCartCount();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderSummary();
+  goToStep(1);
+</script>
+</body>
+</html>

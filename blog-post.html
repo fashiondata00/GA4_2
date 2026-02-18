@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal Post — Maison</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* HERO */
+    .post-hero {
+      height: 75vh; position: relative;
+      overflow: hidden;
+    }
+    .post-hero img {
+      width: 100%; height: 100%;
+      object-fit: cover; filter: grayscale(100%);
+      animation: fadeIn 1.2s ease both;
+    }
+    .post-hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.7) 100%);
+    }
+    .post-hero-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 4rem;
+      z-index: 2;
+    }
+    .post-hero-cat {
+      font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gray-400);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.7s ease 0.3s both;
+    }
+    .post-hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--white); max-width: 700px;
+      animation: fadeUp 0.7s ease 0.5s both;
+    }
+    .post-hero-title em { font-style: italic; }
+    .post-hero-meta {
+      margin-top: 1.5rem;
+      font-size: 0.7rem; color: var(--gray-500);
+      animation: fadeUp 0.7s ease 0.7s both;
+    }
+
+    /* BODY */
+    .post-body-wrap {
+      display: grid;
+      grid-template-columns: 1fr 640px 1fr;
+      padding: 5rem 0;
+    }
+    .post-body { grid-column: 2; }
+    .post-lead {
+      font-family: var(--serif);
+      font-size: 1.4rem; font-weight: 300; line-height: 1.6;
+      color: var(--black); margin-bottom: 2.5rem;
+    }
+    .post-body p {
+      font-size: 0.9rem; line-height: 1.9;
+      color: var(--gray-700); margin-bottom: 1.5rem;
+    }
+    .post-body h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem; font-weight: 300;
+      margin: 3rem 0 1.2rem; color: var(--black);
+    }
+    .post-body h2 em { font-style: italic; }
+    .post-quote {
+      border-left: 2px solid var(--black);
+      padding: 1.5rem 2.5rem;
+      margin: 3rem 0;
+    }
+    .post-quote p {
+      font-family: var(--serif);
+      font-size: 1.3rem; font-weight: 300;
+      line-height: 1.5; color: var(--black) !important;
+      margin: 0;
+    }
+    .post-img-full {
+      grid-column: 1 / 4;
+      height: 500px; overflow: hidden;
+      margin: 3rem 0;
+    }
+    .post-img-full img {
+      width: 100%; height: 100%;
+      object-fit: cover; filter: grayscale(100%);
+    }
+    .post-img-grid {
+      grid-column: 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin: 2rem 0;
+    }
+    .post-img-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; filter: grayscale(80%); }
+
+    /* TAGS */
+    .post-tags {
+      grid-column: 2;
+      display: flex; gap: 0.5rem;
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .post-tag {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.58rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--gray-300);
+      color: var(--gray-500);
+    }
+
+    /* AUTHOR */
+    .post-author-card {
+      grid-column: 2;
+      display: flex; gap: 1.5rem; align-items: center;
+      padding: 2rem;
+      background: var(--gray-100);
+      margin-top: 3rem;
+    }
+    .author-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%; overflow: hidden;
+      background: var(--gray-300); flex-shrink: 0;
+    }
+    .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .author-name { font-family: var(--serif); font-size: 1rem; margin-bottom: 0.3rem; }
+    .author-role { font-size: 0.65rem; color: var(--gray-500); letter-spacing: 0.1em; }
+
+    /* RELATED */
+    .related-posts {
+      padding: 5rem 4rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .related-card { text-decoration: none; color: var(--black); }
+    .related-img { aspect-ratio: 4/3; overflow: hidden; background: var(--gray-100); margin-bottom: 1rem; }
+    .related-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%);
+      transition: transform 0.6s ease, filter 0.4s ease;
+    }
+    .related-card:hover .related-img img { transform: scale(1.05); filter: grayscale(0%); }
+    .related-cat { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.5rem; }
+    .related-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; }
+
+    /* SHARE */
+    .share-row {
+      grid-column: 2;
+      display: flex; gap: 1rem; align-items: center;
+      margin-top: 2rem; padding-top: 2rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .share-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); }
+    .share-btn {
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--gray-300);
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      background: transparent; cursor: pointer; font-family: var(--sans);
+      transition: all 0.2s;
+    }
+    .share-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- POST HERO -->
+  <section class="post-hero">
+    <img id="postHeroImg" src="" alt="">
+    <div class="post-hero-content">
+      <p class="post-hero-cat" id="postCat"></p>
+      <h1 class="post-hero-title" id="postTitle"></h1>
+      <p class="post-hero-meta" id="postMeta"></p>
+    </div>
+  </section>
+
+  <!-- POST BODY -->
+  <div class="post-body-wrap">
+    <article class="post-body" id="postBody">
+    </article>
+
+    <div class="post-img-grid" id="postImgGrid" style="display:none">
+    </div>
+
+    <div class="post-tags" id="postTags"></div>
+
+    <div class="post-author-card" id="postAuthor"></div>
+
+    <div class="share-row">
+      <span class="share-label">Share</span>
+      <button class="share-btn" onclick="copyLink()">Copy Link</button>
+      <button class="share-btn">Instagram</button>
+      <button class="share-btn">KakaoTalk</button>
+    </div>
+  </div>
+
+  <!-- RELATED POSTS -->
+  <section class="related-posts animate">
+    <div class="section-head" style="margin-bottom:2.5rem">
+      <div>
+        <p class="section-label">Continue Reading</p>
+        <h2 class="section-title">More from the <em>Journal</em></h2>
+      </div>
+      <a href="blog.html">All Stories</a>
+    </div>
+    <div class="related-grid">
+      <a href="blog-post.html?id=2" class="related-card">
+        <div class="related-img"><img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&q=80" alt=""></div>
+        <p class="related-cat">Material Guide</p>
+        <p class="related-title">Why Linen is the Fabric of the Season</p>
+      </a>
+      <a href="blog-post.html?id=3" class="related-card">
+        <div class="related-img"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&q=80" alt=""></div>
+        <p class="related-cat">Wardrobe Edit</p>
+        <p class="related-title">Ten Pieces. Infinite Combinations.</p>
+      </a>
+      <a href="blog-post.html?id=5" class="related-card">
+        <div class="related-img"><img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&q=80" alt=""></div>
+        <p class="related-cat">Culture</p>
+        <p class="related-title">How Seoul Became the World's Quiet Fashion Capital</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- SHOP CTA -->
+  <div style="background:var(--black);padding:4rem;text-align:center;margin-top:0">
+    <p style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gray-500);margin-bottom:1rem">Inspired by the story?</p>
+    <h3 style="font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--white);margin-bottom:2rem">Explore the <em>Collection</em></h3>
+    <div style="display:flex;gap:1rem;justify-content:center">
+      <a href="women.html" class="btn btn-white">Shop Women</a>
+      <a href="men.html" class="btn btn-outline" style="color:var(--gray-400);border-color:var(--gray-700)">Shop Men</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="main.js"></script>
+<script>
+  renderNav('blog.html');
+
+  const posts = {
+    1: {
+      cat: 'Style Edit', title: 'The Case for Monochrome Dressing', author: 'Soyoung Choi', role: 'Senior Style Editor', date: 'March 15, 2025', readTime: '8 min read',
+      img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80',
+      authorImg: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
+      lead: 'To wear one colour from head to toe is, at first, an act of courage. But in that courage lies the most liberating discovery in dressing: that restraint is, in fact, a form of freedom.',
+      body: `<p>The monochrome outfit has a bad reputation in certain circles. It is accused of being severe, of lacking personality, of being the choice of those who have given up on dressing. This view misunderstands both the practice and its practitioners.</p>
+      <h2>The <em>Architecture</em> of One Colour</h2>
+      <p>When you dress in a single colour, something interesting happens: the eye, deprived of contrast to rest upon, begins to read the shapes. Silhouette becomes primary. The way fabric falls, how a collar sits, the break of a trouser hem — these become the entire conversation. Colour, when removed, reveals form.</p>
+      <p>This is why the most architecturally rigorous designers — Rei Kawakubo, Ann Demeulemeester, Rick Owens — return again and again to the monochrome palette. It is not minimalism for its own sake. It is precision: using darkness as a tool to make structure legible.</p>
+      <div class="post-quote"><p>"The monochrome palette does not silence the outfit. It amplifies it. Everything else becomes the statement."</p></div>
+      <h2>Building a <em>Monochrome</em> Wardrobe</h2>
+      <p>The practical concern is always texture. A head-to-toe outfit in a single flat colour risks reading as a uniform — and not the good kind. The solution lies in layering different weights and finishes of the same hue. Matte next to shine. Heavy knit against silk. Wool suiting over a cotton tee.</p>
+      <p>These tonal variations create what photographers call "separation" — the eye perceives distinct zones even within a unified palette. The outfit breathes. The wearer does too.</p>
+      <p>Begin with neutrals if you are new to this: black, of course, but also the more challenging options — a head-to-toe ivory, or a complete look in deep navy. These are the classic monochrome territories. From there, you will develop the confidence to attempt the more audacious: a full olive, a complete burgundy, a head-to-toe slate.</p>`,
+      tags: ['Style', 'Minimal', 'Black & White', 'Wardrobe']
+    },
+    2: {
+      cat: 'Material Guide', title: 'Why Linen is the Fabric of the Season', author: 'Min-jun Park', role: 'Fashion Writer', date: 'March 8, 2025', readTime: '6 min read',
+      img: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1400&q=80',
+      authorImg: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+      lead: 'Linen has existed for ten thousand years. What it has taken until now to become fashion's favourite fabric is a question worth asking — and the answer reveals something true about our current moment.',
+      body: `<p>There is a reason linen has survived since the Neolithic period while so many other fibres have come and gone. It is, in most objective measures, the superior warm-weather fabric: cooler than cotton, stronger than cotton, and it becomes softer with every wash — improving, like good wood, with age.</p>
+      <h2>The <em>Science</em> Behind the Softness</h2>
+      <p>Linen is spun from the flax plant, and it is the structure of the flax fibre that gives linen its particular character. The fibres are hollow, which allows them to absorb moisture and release it quickly — producing that immediate cooling effect that anyone who has worn a linen shirt in August will recognise.</p>
+      <p>The wrinkle is not a flaw. It is a feature — and the most honest signal of natural fibre. Linen that refuses to crease has been treated, processed, compromised. The crumple is authenticity made visible.</p>
+      <div class="post-quote"><p>"Linen wrinkles. This is not a problem to be solved. It is the fabric telling you something true about itself."</p></div>
+      <p>For the spring and summer Maison collections, we have sourced exclusively from Belgian flax — the world's finest. Grown without irrigation in the mild rains of Normandy and Flanders, Belgian flax produces a fibre of unusual fineness and lustre. It is the difference between mass-market linen and the real thing, and it is entirely perceptible in the hand.</p>`,
+      tags: ['Linen', 'Materials', 'SS25', 'Craft']
+    },
+    3: {
+      cat: 'Wardrobe Edit', title: 'Ten Pieces. Infinite Combinations.', author: 'Jisoo Han', role: 'Contributing Editor', date: 'February 28, 2025', readTime: '10 min read',
+      img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1400&q=80',
+      authorImg: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
+      lead: 'The capsule wardrobe is not an aesthetic position. It is a mathematical argument. Ten well-chosen pieces generate enough combinations for more than a month of distinct outfits. The maths demands we pay attention.',
+      body: `<p>The phrase "capsule wardrobe" has been diluted by overuse into a vague aspiration toward owning fewer, nicer things. But strip back the marketing language and what remains is an entirely practical proposition about the combinatorics of clothing.</p>
+      <h2>The <em>Mathematics</em> of Getting Dressed</h2>
+      <p>If you have 10 items of clothing — assuming all can be worn together — the number of two-piece combinations is 45. Three-piece combinations: 120. With basic layering, you are looking at well over 200 distinct outfits from 10 pieces. This is not minimalism as deprivation. It is minimalism as abundance.</p>
+      <p>The key is versatility, which is not the same as blandness. A piece is versatile when it plays well with others — when its silhouette, colour, and weight create harmony rather than conflict. The great capsule pieces are typically those that have been worn, tested, and refined over decades: the navy crewneck, the white shirt, the straight-leg dark trouser.</p>
+      <p>But versatility does not mean absence of character. The most useful capsule pieces often have one distinctive feature — an interesting texture, an unexpected cut, a subtle detail — that elevates every combination they enter. The interest is quiet, but it is there.</p>`,
+      tags: ['Wardrobe', 'Capsule', 'Edit', 'Essentials']
+    }
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id') || '1';
+  const post = posts[postId] || posts['1'];
+
+  document.getElementById('postHeroImg').src = post.img;
+  document.getElementById('postCat').textContent = post.cat;
+  document.getElementById('postTitle').innerHTML = post.title.replace(/([^.!?]+)$/, (m) => m);
+  document.getElementById('postMeta').textContent = `By ${post.author} · ${post.date} · ${post.readTime}`;
+  document.title = post.title + ' — Maison Journal';
+
+  document.getElementById('postBody').innerHTML = `<p class="post-lead">${post.lead}</p>${post.body}`;
+
+  document.getElementById('postTags').innerHTML = post.tags.map(t =>
+    `<span class="post-tag">${t}</span>`
+  ).join('');
+
+  document.getElementById('postAuthor').innerHTML = `
+    <div class="author-avatar"><img src="${post.authorImg}" alt="${post.author}"></div>
+    <div>
+      <p class="author-name">${post.author}</p>
+      <p class="author-role">${post.role} · Maison Journal</p>
+    </div>
+  `;
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const btn = event.target;
+      btn.textContent = '✓ Copied';
+      setTimeout(() => btn.textContent = 'Copy Link', 2000);
+    });
+  }
+
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+  renderFooter();
+</script>
+</body>
+</html>
