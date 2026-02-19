@@ -163,7 +163,7 @@
     <div class="collection-grid" id="productGrid">
 
       <!-- W1 -->
-      <a href="product.html?id=w1&cat=women" class="product-card animate" data-delay="0" data-cat="outerwear" data-price="398000">
+      <a href="product.html?id=w1&cat=women" class="product-card animate" data-delay="0" data-cat="outerwear" data-price="398000" data-new="true">
         <span class="product-new">New</span>
         <button class="wishlist-btn" data-wishlist="w1">♡</button>
         <div class="product-img-wrap">
@@ -186,7 +186,7 @@
       </a>
 
       <!-- W2 -->
-      <a href="product.html?id=w2&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="256000">
+      <a href="product.html?id=w2&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="256000" data-new="false">
         <button class="wishlist-btn" data-wishlist="w2">♡</button>
         <div class="product-img-wrap">
           <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=600&q=80" alt="Linen Set">
@@ -207,7 +207,7 @@
       </a>
 
       <!-- W3 -->
-      <a href="product.html?id=w3&cat=women" class="product-card animate" data-delay="200" data-cat="essentials" data-price="189000">
+      <a href="product.html?id=w3&cat=women" class="product-card animate" data-delay="200" data-cat="essentials" data-price="189000" data-new="true">
         <span class="product-new">New</span>
         <button class="wishlist-btn" data-wishlist="w3">♡</button>
         <div class="product-img-wrap">
@@ -231,7 +231,7 @@
       </a>
 
       <!-- W4 -->
-      <a href="product.html?id=w4&cat=women" class="product-card animate" data-delay="0" data-cat="dress" data-price="298000">
+      <a href="product.html?id=w4&cat=women" class="product-card animate" data-delay="0" data-cat="dress" data-price="298000" data-new="false">
         <button class="wishlist-btn" data-wishlist="w4">♡</button>
         <div class="product-img-wrap">
           <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&q=80" alt="Silk Dress">
@@ -252,7 +252,7 @@
       </a>
 
       <!-- W5 -->
-      <a href="product.html?id=w5&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="178000">
+      <a href="product.html?id=w5&cat=women" class="product-card animate" data-delay="100" data-cat="essentials" data-price="178000" data-new="true">
         <span class="product-new">New</span>
         <button class="wishlist-btn" data-wishlist="w5">♡</button>
         <div class="product-img-wrap">
@@ -290,7 +290,8 @@
     document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.product-card').forEach(card => {
-      if (cat === 'all' || card.dataset.cat === cat) {
+      const isNew = card.dataset.new === 'true';
+      if (cat === 'all' || card.dataset.cat === cat || (cat === 'new' && isNew)) {
         card.style.display = 'block';
       } else {
         card.style.display = 'none';
@@ -304,6 +305,9 @@
     cards.sort((a, b) => {
       const pa = parseInt(a.dataset.price);
       const pb = parseInt(b.dataset.price);
+      const na = a.dataset.new === 'true' ? 1 : 0;
+      const nb = b.dataset.new === 'true' ? 1 : 0;
+      if (val === 'new') return nb - na;
       if (val === 'price-low') return pa - pb;
       if (val === 'price-high') return pb - pa;
       return 0;
