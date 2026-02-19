@@ -1,18 +1,22 @@
 // ─── CUSTOM CURSOR ───
 
+// ✅ GTM dataLayer helper
 window.dataLayer = window.dataLayer || [];
 function track(obj){ window.dataLayer.push(obj); }
 
+// 커서 DOM은 renderNav()가 넣어주기 때문에, "나중에" 잡아서 이벤트를 붙이는 방식으로 안정화
+function initCustomCursor() {
+  const cursor = document.querySelector('.cursor');
+  const ring = document.querySelector('.cursor-ring');
+  if (!cursor || !ring) return;
 
-const cursor = document.querySelector('.cursor');
-const ring = document.querySelector('.cursor-ring');
-if (cursor && ring) {
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
     ring.style.left = e.clientX + 'px';
     ring.style.top = e.clientY + 'px';
   });
+
   document.querySelectorAll('a, button, .product-card').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
@@ -26,8 +30,9 @@ if (cursor && ring) {
 }
 
 // ─── NAV SCROLL ───
-const nav = document.querySelector('nav');
-if (nav) {
+function initNavScroll() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
   });
@@ -35,7 +40,7 @@ if (nav) {
 
 // ─── INTERSECTION OBSERVER (ANIMATE ON SCROLL) ───
 const observer = new IntersectionObserver(entries => {
-  entries.forEach((entry, i) => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.style.animationDelay = (entry.target.dataset.delay || 0) + 'ms';
       entry.target.classList.add('visible');
@@ -48,6 +53,15 @@ document.querySelectorAll('.animate').forEach(el => observer.observe(el));
 // ─── CART MANAGEMENT ───
 const getCart = () => JSON.parse(localStorage.getItem('maison_cart') || '[]');
 const saveCart = (cart) => localStorage.setItem('maison_cart', JSON.stringify(cart));
+
+function updateCartCount() {
+  const cart = getCart();
+  const total = cart.reduce((sum, i) => sum + i.qty, 0);
+  document.querySelectorAll('.cart-count').forEach(el => {
+    el.textContent = total;
+    el.style.display = total > 0 ? 'inline-flex' : 'none';
+  });
+}
 
 function addToCart(product) {
   const cart = getCart();
@@ -63,7 +77,7 @@ function addToCart(product) {
   updateCartCount();
   showCartNotification(product.name);
 
-  // ✅ (여기 안에 있어야 함!)
+  // ✅ (추가) 어떤 아이템을 담았는지 기록 (GTM용 Custom Event)
   track({
     event: "add_to_bag",
     item_id: product.id,
@@ -154,7 +168,11 @@ function renderNav(active) {
     </nav>
   `;
   document.body.insertAdjacentHTML('afterbegin', navHTML);
+
+  // nav 삽입 후에 초기화해야 안전
   updateCartCount();
+  initNavScroll();
+  initCustomCursor();
 }
 
 // ─── SHARED FOOTER HTML ───
