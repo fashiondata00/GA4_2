@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Bag ??Maison</title>
+  <title>Your Bag — Maison</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .cart-page {
@@ -149,11 +149,11 @@
     </div>
     <div class="order-summary" id="orderSummary" style="display:none">
       <h3 class="summary-title">Order Summary</h3>
-      <div class="summary-line"><span>Subtotal</span><span id="sumSubtotal">??/span></div>
+      <div class="summary-line"><span>Subtotal</span><span id="sumSubtotal">—</span></div>
       <div class="summary-line"><span>Shipping</span><span id="sumShipping">Free</span></div>
-      <div class="summary-line"><span>Estimated Tax (10%)</span><span id="sumTax">??/span></div>
+      <div class="summary-line"><span>Estimated Tax (10%)</span><span id="sumTax">—</span></div>
       <div class="summary-divider"></div>
-      <div class="summary-total"><span>Total</span><span id="sumTotal">??/span></div>
+      <div class="summary-total"><span>Total</span><span id="sumTotal">—</span></div>
       <div class="promo-wrap">
         <div class="promo-input-row">
           <input class="promo-input" placeholder="Promo Code" id="promoInput">
@@ -163,7 +163,7 @@
       </div>
       <a href="checkout.html" class="btn btn-primary" style="width:100%;display:flex;justify-content:center;text-align:center">Proceed to Checkout</a>
       <div class="secure-badges">
-        <span>?�� Secure</span>
+        <span>🔒 Secure</span>
         <span>SSL Encrypted</span>
         <span>Safe Checkout</span>
       </div>
@@ -210,7 +210,7 @@
           </div>
           <div>
             <div class="qty-control">
-              <button class="qty-btn" onclick="changeQty('${item.id}','${item.size}',-1)">??/button>
+              <button class="qty-btn" onclick="changeQty('${item.id}','${item.size}',-1)">−</button>
               <span class="qty-num">${item.qty}</span>
               <button class="qty-btn" onclick="changeQty('${item.id}','${item.size}',1)">+</button>
             </div>
@@ -218,7 +218,7 @@
           </div>
         </div>
         <div>
-          <p class="cart-item-price">??{(item.price * item.qty).toLocaleString()}</p>
+          <p class="cart-item-price">₩${(item.price * item.qty).toLocaleString()}</p>
         </div>
       </div>
     `).join('');
@@ -229,10 +229,10 @@
     const shipping = subtotal >= 150000 ? 0 : 3000;
     const total = subtotal + tax + shipping;
 
-    document.getElementById('sumSubtotal').textContent = '?? + subtotal.toLocaleString();
-    document.getElementById('sumShipping').textContent = shipping === 0 ? 'Free' : '?? + shipping.toLocaleString();
-    document.getElementById('sumTax').textContent = '?? + tax.toLocaleString();
-    document.getElementById('sumTotal').textContent = '?? + total.toLocaleString();
+    document.getElementById('sumSubtotal').textContent = '₩' + subtotal.toLocaleString();
+    document.getElementById('sumShipping').textContent = shipping === 0 ? 'Free' : '₩' + shipping.toLocaleString();
+    document.getElementById('sumTax').textContent = '₩' + tax.toLocaleString();
+    document.getElementById('sumTotal').textContent = '₩' + total.toLocaleString();
   }
 
   function changeQty(id, size, delta) {
@@ -256,7 +256,7 @@
     const code = document.getElementById('promoInput').value.toUpperCase();
     const msg = document.getElementById('promoMsg');
     if (code === 'MAISON10') {
-      msg.textContent = '??10% discount applied';
+      msg.textContent = '✓ 10% discount applied';
       msg.style.color = 'green';
     } else {
       msg.textContent = 'Invalid promo code';

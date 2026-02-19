@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product ??Maison</title>
+  <title>Product — Maison</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .product-layout {
@@ -149,7 +149,7 @@
       font-size: 0.8rem; color: var(--gray-700);
       padding: 0.2rem 0;
     }
-    .accordion-content ul li::before { content: '??'; color: var(--gray-400); }
+    .accordion-content ul li::before { content: '— '; color: var(--gray-400); }
     .accordion-item:last-child { border-bottom: 1px solid var(--gray-100); }
 
     /* YOU MAY ALSO LIKE */
@@ -221,7 +221,7 @@
     <div class="rating-summary">
       <div>
         <div class="rating-big">4.8</div>
-        <div class="stars">?�★?�★??/div>
+        <div class="stars">★★★★★</div>
         <div class="rating-label">Based on 128 reviews</div>
       </div>
     </div>
@@ -230,7 +230,7 @@
         <div class="review-header">
           <span class="reviewer-name">J. Kim</span>
           <div style="display:flex;gap:1rem;align-items:center">
-            <span class="stars" style="font-size:0.7rem">?�★?�★??/span>
+            <span class="stars" style="font-size:0.7rem">★★★★★</span>
             <span class="review-date">February 2025</span>
           </div>
         </div>
@@ -240,7 +240,7 @@
         <div class="review-header">
           <span class="reviewer-name">S. Park</span>
           <div style="display:flex;gap:1rem;align-items:center">
-            <span class="stars" style="font-size:0.7rem">?�★?�★??/span>
+            <span class="stars" style="font-size:0.7rem">★★★★☆</span>
             <span class="review-date">January 2025</span>
           </div>
         </div>
@@ -250,7 +250,7 @@
         <div class="review-header">
           <span class="reviewer-name">M. Lee</span>
           <div style="display:flex;gap:1rem;align-items:center">
-            <span class="stars" style="font-size:0.7rem">?�★?�★??/span>
+            <span class="stars" style="font-size:0.7rem">★★★★★</span>
             <span class="review-date">January 2025</span>
           </div>
         </div>
@@ -287,7 +287,7 @@
   let selectedSize = null;
 
   function renderProduct(p) {
-    document.title = p.name + ' ??Maison';
+    document.title = p.name + ' — Maison';
     const backLink = p.cat === 'women' ? 'women.html' : 'men.html';
     const thumbsHTML = p.imgs.map((img, i) =>
       `<div class="thumb ${i===0?'active':''}" onclick="switchImg('${img}', this)"><img src="${img}" alt=""></div>`
@@ -311,7 +311,7 @@
         </div>
         <p class="product-detail-brand">${p.brand}</p>
         <h1 class="product-detail-name">${p.name}</h1>
-        <p class="product-detail-price">??{p.price.toLocaleString()}</p>
+        <p class="product-detail-price">₩${p.price.toLocaleString()}</p>
         <div class="divider"></div>
         <div>
           <div class="size-section-label">
@@ -322,12 +322,12 @@
         </div>
         <div class="add-actions">
           <button class="btn btn-primary" onclick="handleAddToCart()">Add to Bag</button>
-          <button class="wishlist-large" data-wishlist="${p.id}">??/button>
+          <button class="wishlist-large" data-wishlist="${p.id}">♡</button>
         </div>
         <div class="shipping-badges">
-          <span class="shipping-badge">?�� Free Shipping</span>
-          <span class="shipping-badge">??30-Day Returns</span>
-          <span class="shipping-badge">??Authenticity Guaranteed</span>
+          <span class="shipping-badge">🚚 Free Shipping</span>
+          <span class="shipping-badge">↩ 30-Day Returns</span>
+          <span class="shipping-badge">✦ Authenticity Guaranteed</span>
         </div>
         <div class="divider"></div>
         <div class="accordion-item">
@@ -352,7 +352,7 @@
           </div>
           <div class="accordion-content">
             <ul>
-              <li>Free standard shipping on all orders over ??50,000</li>
+              <li>Free standard shipping on all orders over ₩150,000</li>
               <li>Express delivery available (1-2 business days)</li>
               <li>Free returns within 30 days of purchase</li>
               <li>Items must be unworn, unwashed with original tags</li>
@@ -377,7 +377,7 @@
         <div class="product-info">
           <p class="product-brand">${r.brand}</p>
           <p class="product-name">${r.name}</p>
-          <p class="product-price">??{r.price.toLocaleString()}</p>
+          <p class="product-price">₩${r.price.toLocaleString()}</p>
         </div>
       </a>
     `).join('');
@@ -413,7 +413,7 @@
     const content = header.nextElementSibling;
     const icon = header.querySelector('.accordion-icon');
     content.classList.toggle('open');
-    icon.textContent = content.classList.contains('open') ? '?? : '+';
+    icon.textContent = content.classList.contains('open') ? '−' : '+';
   }
 
   renderProduct(product);
