@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — Maison</title>
+  <title>Checkout ??Maison</title>
   <link rel="stylesheet" href="style.css">
   <style>
     .checkout-layout {
@@ -139,8 +139,21 @@
     .success-sub { font-size: 0.85rem; color: var(--gray-500); line-height: 1.8; max-width: 400px; margin: 0 auto 2.5rem; }
     .order-number { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 0.5rem; }
   </style>
+<!-- Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id=GTM-WZ6M93PX'+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WZ6M93PX');
+</script>
+<!-- End Google Tag Manager -->
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZ6M93PX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 <div class="page-wrapper">
   <div id="checkoutWrap">
     <div class="checkout-layout" id="checkoutLayout">
@@ -194,7 +207,7 @@
                 <input type="radio" name="shipping" value="free" checked style="accent-color:var(--black)">
                 <div style="flex:1">
                   <p style="font-size:0.8rem;font-weight:400">Standard Delivery</p>
-                  <p style="font-size:0.7rem;color:var(--gray-500)">3–5 business days</p>
+                  <p style="font-size:0.7rem;color:var(--gray-500)">3?? business days</p>
                 </div>
                 <span style="font-size:0.8rem">Free</span>
               </label>
@@ -202,9 +215,9 @@
                 <input type="radio" name="shipping" value="express" style="accent-color:var(--black)">
                 <div style="flex:1">
                   <p style="font-size:0.8rem;font-weight:400">Express Delivery</p>
-                  <p style="font-size:0.7rem;color:var(--gray-500)">1–2 business days</p>
+                  <p style="font-size:0.7rem;color:var(--gray-500)">1?? business days</p>
                 </div>
-                <span style="font-size:0.8rem">₩5,000</span>
+                <span style="font-size:0.8rem">??,000</span>
               </label>
               <label style="display:flex;align-items:center;gap:1.2rem;padding:1.2rem;border:1px solid var(--gray-300);cursor:pointer">
                 <input type="radio" name="shipping" value="same" style="accent-color:var(--black)">
@@ -212,12 +225,12 @@
                   <p style="font-size:0.8rem;font-weight:400">Same Day (Seoul Only)</p>
                   <p style="font-size:0.7rem;color:var(--gray-500)">Order before 12PM</p>
                 </div>
-                <span style="font-size:0.8rem">₩15,000</span>
+                <span style="font-size:0.8rem">??5,000</span>
               </label>
             </div>
           </div>
           <div style="display:flex;gap:1rem">
-            <button class="btn btn-outline" onclick="goToStep(1)">← Back</button>
+            <button class="btn btn-outline" onclick="goToStep(1)">??Back</button>
             <button class="btn btn-primary" onclick="goToStep(3)">Continue to Payment</button>
           </div>
         </div>
@@ -228,15 +241,15 @@
             <h2 class="checkout-section-title">Payment <em style="font-style:italic">Details</em></h2>
             <div class="payment-methods">
               <button class="pay-method active" onclick="selectPay(this)">
-                <span class="pay-method-icon">💳</span>
+                <span class="pay-method-icon">?��</span>
                 <span class="pay-method-label">Card</span>
               </button>
               <button class="pay-method" onclick="selectPay(this)">
-                <span class="pay-method-icon">📱</span>
+                <span class="pay-method-icon">?��</span>
                 <span class="pay-method-label">Kakao Pay</span>
               </button>
               <button class="pay-method" onclick="selectPay(this)">
-                <span class="pay-method-icon">🏦</span>
+                <span class="pay-method-icon">?��</span>
                 <span class="pay-method-label">Bank Transfer</span>
               </button>
               <button class="pay-method" onclick="selectPay(this)">
@@ -249,13 +262,13 @@
                 <div class="form-group" style="position:relative">
                   <label class="form-label">Card Number</label>
                   <input class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
-                  <span class="card-icon">💳</span>
+                  <span class="card-icon">?��</span>
                 </div>
               </div>
               <div class="card-row" style="margin-top:1rem">
                 <div class="form-group"><label class="form-label">Cardholder Name</label><input class="form-input" placeholder="SEOJUN KIM"></div>
                 <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)"></div>
-                <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="•••" maxlength="3" type="password"></div>
+                <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="?�•�? maxlength="3" type="password"></div>
               </div>
             </div>
           </div>
@@ -265,8 +278,8 @@
               <span>I agree to Maison's <u>Terms of Service</u> and <u>Privacy Policy</u>. I confirm my order details are correct.</span>
             </label>
             <div style="display:flex;gap:1rem">
-              <button class="btn btn-outline" onclick="goToStep(2)">← Back</button>
-              <button class="btn btn-primary" style="flex:1" onclick="placeOrder()">Place Order →</button>
+              <button class="btn btn-outline" onclick="goToStep(2)">??Back</button>
+              <button class="btn btn-primary" style="flex:1" onclick="placeOrder()">Place Order ??/button>
             </div>
           </div>
         </div>
@@ -277,16 +290,16 @@
         <h3 class="cs-title">Your Order</h3>
         <div id="csSummaryItems"></div>
         <div class="cs-divider"></div>
-        <div class="cs-line"><span>Subtotal</span><span id="csSubtotal">—</span></div>
+        <div class="cs-line"><span>Subtotal</span><span id="csSubtotal">??/span></div>
         <div class="cs-line"><span>Shipping</span><span id="csShipping">Free</span></div>
-        <div class="cs-line"><span>Tax (10%)</span><span id="csTax">—</span></div>
-        <div class="cs-total"><span>Total</span><span id="csTotal">—</span></div>
+        <div class="cs-line"><span>Tax (10%)</span><span id="csTax">??/span></div>
+        <div class="cs-total"><span>Total</span><span id="csTotal">??/span></div>
       </div>
     </div>
 
     <!-- SUCCESS -->
     <div class="order-success" id="orderSuccess">
-      <div class="success-icon">✓</div>
+      <div class="success-icon">??/div>
       <p class="order-number">Order #MS-2025-<span id="orderNum"></span></p>
       <h2 class="success-title">Thank you for<br><em>your order</em></h2>
       <p class="success-sub">Your order has been confirmed and will be with you soon. A confirmation has been sent to your email.</p>
@@ -343,15 +356,15 @@
           <p class="cs-item-name">${item.name}</p>
           <p class="cs-item-meta">Size: ${item.size} · Qty: ${item.qty}</p>
         </div>
-        <span class="cs-item-price">₩${(item.price * item.qty).toLocaleString()}</span>
+        <span class="cs-item-price">??{(item.price * item.qty).toLocaleString()}</span>
       </div>
     `).join('');
     const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const tax = Math.round(subtotal * 0.1);
     const total = subtotal + tax;
-    document.getElementById('csSubtotal').textContent = '₩' + subtotal.toLocaleString();
-    document.getElementById('csTax').textContent = '₩' + tax.toLocaleString();
-    document.getElementById('csTotal').textContent = '₩' + total.toLocaleString();
+    document.getElementById('csSubtotal').textContent = '?? + subtotal.toLocaleString();
+    document.getElementById('csTax').textContent = '?? + tax.toLocaleString();
+    document.getElementById('csTotal').textContent = '?? + total.toLocaleString();
   }
 
   function placeOrder() {
