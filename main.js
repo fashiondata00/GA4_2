@@ -1,4 +1,9 @@
 // ─── CUSTOM CURSOR ───
+
+window.dataLayer = window.dataLayer || [];
+function track(obj){ window.dataLayer.push(obj); }
+
+
 const cursor = document.querySelector('.cursor');
 const ring = document.querySelector('.cursor-ring');
 if (cursor && ring) {
@@ -47,22 +52,24 @@ const saveCart = (cart) => localStorage.setItem('maison_cart', JSON.stringify(ca
 function addToCart(product) {
   const cart = getCart();
   const existing = cart.find(i => i.id === product.id && i.size === product.size);
+
   if (existing) {
     existing.qty += 1;
   } else {
     cart.push({ ...product, qty: 1 });
   }
+
   saveCart(cart);
   updateCartCount();
   showCartNotification(product.name);
-}
 
-function updateCartCount() {
-  const cart = getCart();
-  const total = cart.reduce((sum, i) => sum + i.qty, 0);
-  document.querySelectorAll('.cart-count').forEach(el => {
-    el.textContent = total;
-    el.style.display = total > 0 ? 'inline-flex' : 'none';
+  // ✅ (여기 안에 있어야 함!)
+  track({
+    event: "add_to_bag",
+    item_id: product.id,
+    item_name: product.name,
+    price: product.price,
+    size: product.size
   });
 }
 
